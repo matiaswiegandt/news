@@ -18,13 +18,66 @@
     <!-- Your own CSS -->
     <link rel="stylesheet" href="/styles.css">
 
-    <title>News</title>
+    <title>Morning read</title>
   </head>
   <body>
-
-    <div class="container mt-5">
-      <h1>News</h1>
+  
+  <div class="container mt-5">
+      <h1>Good morning Boss</h1>
     </div>
+<% current_temp = @forecast["current"]["temp"]%>
+<div class="container mt-5">
+<div class="jumbotron jumbotron-fluid" style="background-image: url(https://cdn.shopify.com/s/files/1/1470/2456/articles/header_3ccb6db0-b2a5-4a91-945f-6aba25c2e993_1400x.progressive.jpg?v=1547642967); background-size: cover;">
+<div class="container mt-5">
+<h3>Today's weather</h3>
+<p1><% if current_temp>20 %>  
+<%="It is now #{@forecast["current"]["temp"].round()}ºC but it actually feels like #{@forecast["current"]["feels_like"].round()}ºC, and there are #{@forecast["current"]["weather"][0]["description"]}. You are fine with your shirt" %>
+<% elsif current_temp<=20 && current_temp>=8 %>
+<%="It is now #{@forecast["current"]["temp"].round()}ºC but it actually feels like #{@forecast["current"]["feels_like"].round()}ºC, and there are #{@forecast["current"]["weather"][0]["description"]}. Take a sweater" %>
+<% else %>
+        <%="It is now #{@forecast["current"]["temp"].round()}ºC but it actually feels like #{@forecast["current"]["feels_like"].round()}ºC, and there are #{@forecast["current"]["weather"][0]["description"]}. Get a coat, its quite cold" %>
+            <% end %></p1>
+           <div class="row ml-0">
+   <p1> <%= "The rest of the day there will be a high of #{@forecast["daily"][0]["temp"]["max"]}, a low of #{@forecast["daily"][0]["temp"]["min"]} and #{@forecast["daily"][0]["weather"][0]["description"]} "%>
+   </p1> <!--#heres where I will put the rest of the day. --!>
+    </div> 
+    </div>
+    
+
+<div class="container mt-5">
+<h3>Forecast</h3>
+    <ul class="forecast-list">
+    <% day_number = 1 %>
+        <% for day in @forecast["daily"] %>
+        <% if day_number ==1 %>
+           <li> <%= "Tomorrow will have a high of #{day["temp"]["max"].round()} and #{day["weather"][0]["description"]}" %> </li>
+           <% elsif day_number > 1%>
+           <li> <%= "Day #{day_number} will have a high of #{day["temp"]["max"].round()}, a low of #{day["temp"]["min"].round()} and #{day["weather"][0]["description"]}" %> </li>
+           <% else %>
+           <%= "This does not work" %>
+        <% end %>
+        <% break if day_number == 7 %>
+        <% day_number = day_number + 1 %>
+        <% end %>
+        </ul>
+    </div>
+    </div>
+    </div>
+
+    <!-- ##Here is where you'll write the HTML to show the weather and the news... I think.--!>
+<div class="container mt-5">
+    <h3>Check out some of today's headlines:</h3>
+    </div>
+    <% for article in @news["articles"] %>
+    <div class="container mt-5">
+    <h4><%= "#{article["title"]}" %>
+    </h4>
+    <p2> <%= "#{article["description"]}" %>
+    </p2>
+    <p3> <a href=<%= "#{article["url"]}" %>>Im interested</a>
+    </p3>
+    </div>
+    <% end %>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
